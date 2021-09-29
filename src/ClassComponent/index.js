@@ -9,6 +9,7 @@ class ClassComponent extends React.Component{
         addEffect(()=>{
             setValue(this.props.data)
         },[this.props.data])
+        
         return <div>
             <div>
                 值：{value}<button onClick={()=>{setValue(value+1)}}>+</button>
