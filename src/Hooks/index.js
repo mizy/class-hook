@@ -52,19 +52,41 @@ function addState(initialValue){
     }]
 }
 
-function addEffect(callback,args){
+function addEffect(callback,args=[]){
     const {effects,init} = now.current;
     const nowComponent = now.current;
     let nowIndex = now.current.effectsIndex;
     if(init){
         effects.push(args);
         nowComponent.effectsIndex++;
+        if(args.length===0){
+            callback()
+        }
     }else{
         const values = effects[nowIndex];
         nowComponent.effectsIndex++;
         if(args.find((item,index)=>item!==values[index])){
             callback();
             effects[nowIndex] = args;
+        }
+    }
+}
+function addMemo(callback,args=[]){
+    const {effects,init} = now.current;
+    const nowComponent = now.current;
+    let nowIndex = now.current.effectsIndex;
+    if(init){
+        effects.push(args);
+        nowComponent.effectsIndex++;
+        if(args.length===0){
+            return callback()
+        }
+    }else{
+        const values = effects[nowIndex];
+        nowComponent.effectsIndex++;
+        if(args.find((item,index)=>item!==values[index])){
+            effects[nowIndex] = args;
+            return callback();
         }
     }
 }
